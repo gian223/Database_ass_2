@@ -1,30 +1,23 @@
 CREATE DATABASE GuestHousegrc0396
 GO
 
-USE GuestHousegrc0396
+DROP DATABASE GuestHousegrc0396
 GO
 
-DROP TABLE calandar
-DROP TABLE guest
-DROP TABLE extra
-DROP TABLE rate
-DROP TABLE room
-DROP TABLE room_type
-DROP TABLE booking
+USE GuestHousegrc0396
+GO
+SELECT * FROM calendar
 
+SELECT * FROM booking
+DROP TABLE calendar
 
---Questions
---1. Naming conventions
---2. Do forign keys have to have same name as forign table primary key
---3. Does our ERD have to look exactly like yours or can we add/remove fields
---4. Do we need to document what we did?
-
-CREATE TABLE calandar (
-    i DATETIME PRIMARY KEY
+-- CALENDAR TABLE
+CREATE TABLE calendar (
+    i DATE PRIMARY KEY
 );
 
-BULK INSERT calandar
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\calendar.csv'
+BULK INSERT calendar
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\calendar.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -33,7 +26,7 @@ WITH (
 )
 GO
 
-
+-- GUEST TABLE
 CREATE TABLE guest (
     id INT PRIMARY KEY,
     first_name VARCHAR(20),
@@ -42,7 +35,7 @@ CREATE TABLE guest (
 );
 
 BULK INSERT guest
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\guest.csv'
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\guest.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -51,62 +44,13 @@ WITH (
 )
 GO
 
-CREATE TABLE extra (
-    extra_id INT PRIMARY KEY,
-	booking_id INT,
-	description VARCHAR(30),
-	amount decimal
-);
-BULK INSERT extra
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\extra.csv'
-WITH (
-    FORMAT = 'CSV',
-    FIRSTROW = 2,
-    FIELDTERMINATOR = ',',
-    ROWTERMINATOR = '\n'
-)
-GO
-select * from extra
-
-CREATE TABLE rate (
-    room_type VARCHAR(6),
-    occupancy INT,
-    amount INT,
-	PRIMARY KEY(room_type, occupancy)
-);
-BULK INSERT rate
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\rate.csv'
-WITH (
-    FORMAT = 'CSV',
-    FIRSTROW = 2,
-    FIELDTERMINATOR = ',',
-    ROWTERMINATOR = '\n'
-)
-GO
-select * from rate
-
-CREATE TABLE room (
-    id INT PRIMARY KEY,
-    room_type VARCHAR(6),
-    max_occupancy INT
-);
-BULK INSERT room
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\room.csv'
-WITH (
-    FORMAT = 'CSV',
-    FIRSTROW = 2,
-    FIELDTERMINATOR = ',',
-    ROWTERMINATOR = '\n'
-)
-GO
-select * from room
-
+-- ROOM_TYPE TABLE
 CREATE TABLE room_type (
     id VARCHAR(6) PRIMARY KEY,
     description VARCHAR(50)
 );
 BULK INSERT room_type
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\room_type.csv'
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\room_type.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -115,6 +59,40 @@ WITH (
 )
 GO
 
+-- RATE TABLE
+CREATE TABLE rate (
+    room_type VARCHAR(6) FOREIGN KEY REFERENCES room_type(id) NOT NULL,
+    occupancy INT,
+    amount INT,
+	PRIMARY KEY(room_type, occupancy)
+);
+BULK INSERT rate
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\rate.csv'
+WITH (
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+)
+GO
+
+-- ROOM TABLE
+CREATE TABLE room (
+    id INT PRIMARY KEY,
+    room_type VARCHAR(6) FOREIGN KEY REFERENCES room_type(id) NOT NULL,
+    max_occupancy INT
+);
+BULK INSERT room
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\room.csv'
+WITH (
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+)
+GO
+
+-- BOOKING TABLE
 CREATE TABLE booking (
     booking_id INT PRIMARY KEY,
     booking_date DATETIME,
@@ -128,7 +106,7 @@ CREATE TABLE booking (
 	FOREIGN KEY (room_type_requested) REFERENCES room_type(id)
 );
 BULK INSERT booking
-FROM 'C:\Users\grc0396\OneDrive - Ara Institute of Canterbury\Database\Assignment 2\DataFiles\booking.csv'
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\booking.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -136,7 +114,23 @@ WITH (
     ROWTERMINATOR = '\n'
 )
 GO
-select * from booking
+
+-- EXTRA TABLE
+CREATE TABLE extra (
+    extra_id INT PRIMARY KEY,
+	booking_id INT FOREIGN KEY REFERENCES booking(booking_id) NOT NULL,
+	description VARCHAR(30),
+	amount decimal
+);
+BULK INSERT extra
+FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\extra.csv'
+WITH (
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+)
+GO
 
 
 
