@@ -6,9 +6,9 @@ GO
 
 USE GuestHousegrc0396
 GO
-SELECT * FROM calendar
+use MagazineEX
+GO
 
-SELECT * FROM booking
 DROP TABLE calendar
 
 -- CALENDAR TABLE
@@ -17,7 +17,7 @@ CREATE TABLE calendar (
 );
 
 BULK INSERT calendar
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\calendar.csv'
+FROM 'C:\Users\grc0396\DataFiles\calendar.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -35,7 +35,7 @@ CREATE TABLE guest (
 );
 
 BULK INSERT guest
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\guest.csv'
+FROM 'C:\Users\grc0396\DataFiles\guest.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -50,7 +50,7 @@ CREATE TABLE room_type (
     description VARCHAR(50)
 );
 BULK INSERT room_type
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\room_type.csv'
+FROM 'C:\Users\grc0396\DataFiles\room_type.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -67,7 +67,7 @@ CREATE TABLE rate (
 	PRIMARY KEY(room_type, occupancy)
 );
 BULK INSERT rate
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\rate.csv'
+FROM 'C:\Users\grc0396\DataFiles\rate.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -83,7 +83,7 @@ CREATE TABLE room (
     max_occupancy INT
 );
 BULK INSERT room
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\room.csv'
+FROM 'C:\Users\grc0396\DataFiles\room.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -106,7 +106,7 @@ CREATE TABLE booking (
 	FOREIGN KEY (room_type_requested) REFERENCES room_type(id)
 );
 BULK INSERT booking
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\booking.csv'
+FROM 'C:\Users\grc0396\DataFiles\booking.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -123,7 +123,7 @@ CREATE TABLE extra (
 	amount decimal
 );
 BULK INSERT extra
-FROM 'C:\Users\Gian\OneDrive - Ara Institute of Canterbury\Database\Assignment_2\DataFiles\extra.csv'
+FROM 'C:\Users\grc0396\DataFiles\extra.csv'
 WITH (
     FORMAT = 'CSV',
     FIRSTROW = 2,
@@ -131,6 +131,8 @@ WITH (
     ROWTERMINATOR = '\n'
 )
 GO
+
+select * from booking
 
 
 
