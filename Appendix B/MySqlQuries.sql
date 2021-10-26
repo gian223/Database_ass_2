@@ -1,6 +1,7 @@
+-- github https://github.com/gian223/Database_ass_2
+
 USE [GuestHouse2021-grc0396]
 GO
-
 USE [GuestHouse2021GC]
 GO
 
@@ -91,11 +92,17 @@ INNER JOIN [dbo].[rate] r ON b.[room_type_requested] = r.[room_type] AND b.[occu
 GROUP BY b.[booking_id], r.[amount], b.[nights]
 GO
 
+select * from guestBookingRate
+go
+
 CREATE OR ALTER VIEW guestExtras AS 
 SELECT [booking_id], SUM([amount]) AS 'total_extras'
 FROM [dbo].[extra] e 
 GROUP BY [booking_id]
 GO
+
+select * from guestExtras
+go
 
 SELECT ge.[booking_id], SUM(ge.total_extras + (br.rate_per_night * br.[nights])) AS 'Total Payable' 
 FROM [dbo].[guestExtras] ge 
